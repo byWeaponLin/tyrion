@@ -1,0 +1,51 @@
+package com.weaponlin.inf.tyrion.executor.util;
+
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.SqlParameterValue;
+import org.springframework.jdbc.core.StatementCreatorUtils;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.List;
+
+public class BatchUpdateUtil {
+
+    public static BatchPreparedStatementSetter getBatchUpdateSetter(final List<Object[]> batchValues,
+                                                                    final int[] columnTypes) {
+        return new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                Object[] values = batchValues.get(i);
+                BatchUpdateUtil.setStatementParameters(values, ps, columnTypes);
+            }
+
+            @Override
+            public int getBatchSize() {
+                return batchValues.size();
+            }
+        };
+    }
+
+    private static void setStatementParameters(Object[] values, PreparedStatement ps,
+                                               int[] columnTypes) throws SQLException {
+        int colIndex = 0;
+        int length = values.length;
+        for (Object value : values) {
+            ++colIndex;
+            if (value instanceof SqlParameterValue) {
+                SqlParameterValue paramValue = (SqlParameterValue) value;
+                StatementCreatorUtils.setParameterValue(ps, colIndex, paramValue, paramValue.getValue());
+            } else {
+                int colType;
+                if (columnTypes != null && columnTypes.length >= colIndex) {
+                    colType = columnTypes[colIndex - 1];
+                } else {
+                    colType = -2147483648;
+                }
+
+                StatementCreatorUtils.setParameterValue(ps, colIndex, colType, value);
+            }
+        }
+
+    }
+}
