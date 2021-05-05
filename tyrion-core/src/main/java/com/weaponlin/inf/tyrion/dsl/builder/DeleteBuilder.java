@@ -3,7 +3,7 @@ package com.weaponlin.inf.tyrion.dsl.builder;
 import com.weaponlin.inf.tyrion.dsl.SQLParameter;
 import com.weaponlin.inf.tyrion.dsl.operand.table.TableOperand;
 import com.weaponlin.inf.tyrion.enums.SQLType;
-import com.weaponlin.inf.tyrion.executor.SQLExecutor;
+import com.weaponlin.inf.tyrion.executor.Executor;
 
 import java.util.List;
 
@@ -21,8 +21,8 @@ public class DeleteBuilder<R, T> extends AbstractBuilder<R, T> {
         super(SQL_TYPE, null);
     }
 
-    public DeleteBuilder(SQLExecutor sqlExecutor) {
-        super(SQL_TYPE, sqlExecutor);
+    public DeleteBuilder(Executor executor) {
+        super(SQL_TYPE, executor);
     }
 
     public FromBuilder<R, T> from(TableOperand<T> table) {

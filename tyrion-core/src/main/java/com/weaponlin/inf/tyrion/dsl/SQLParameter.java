@@ -65,6 +65,5 @@ public class SQLParameter<R, T> {
         this.parameters = parameters;
         this.rowMaps = rowMaps;
         this.resultType = resultType;
-        this.resultMapHandler = new DefaultResultMapHandler<>(rowMaps, resultType);
     }
 }

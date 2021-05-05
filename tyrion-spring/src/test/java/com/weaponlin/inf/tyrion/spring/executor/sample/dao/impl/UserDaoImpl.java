@@ -1,14 +1,14 @@
-package com.weaponlin.inf.tyrion.sample.dao.impl;
+package com.weaponlin.inf.tyrion.spring.executor.sample.dao.impl;
 
-import com.weaponlin.inf.tyrion.sample.dao.UserDao;
-import com.weaponlin.inf.tyrion.sample.entity.User;
+import com.weaponlin.inf.tyrion.spring.executor.sample.dao.UserDao;
+import com.weaponlin.inf.tyrion.spring.executor.sample.entity.User;
 
 import java.util.List;
 
 
 public class UserDaoImpl implements UserDao {
 
-//    Executor executor = new DefaultSpringExecutor();
+//    Executor executor = new JdbcTemplateExecutor();
 
     @Override
     public List<User> getAllUser() {

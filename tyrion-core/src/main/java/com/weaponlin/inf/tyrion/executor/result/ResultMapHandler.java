@@ -1,9 +1,7 @@
 package com.weaponlin.inf.tyrion.executor.result;
 
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 
-public interface ResultMapHandler<T> extends RowMapper<T> {
+public interface ResultMapHandler<T> {
     T mapRow(ResultSet rs);
 }

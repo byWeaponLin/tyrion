@@ -16,15 +16,14 @@ import static com.weaponlin.inf.tyrion.dsl.operand.transform.ColumnOperand.colum
 import static com.weaponlin.inf.tyrion.dsl.operand.transform.PlaceholderOperand.value;
 import static com.weaponlin.inf.tyrion.dsl.operand.transform.PlaceholderOperand.values;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:test_applicationContext.xml"})
-public class DefaultSQLExecutorTest {
+public class DefaultExecutorTest {
 
     @Autowired
-    @Qualifier("defaultSQLExecutor")
-    private DefaultSQLExecutor executor;
+    @Qualifier("builderExecutor")
+    private BuilderExecutor executor;
 
     @Test
     public void test_select() {
@@ -82,24 +81,6 @@ public class DefaultSQLExecutorTest {
                 .and(column("id").in(values(66, 77, 88, 99)))
                 .exec();
         assertEquals(4, result);
-    }
-
-    @Test
-    public void test_get_by_id_and_delete_by_id() {
-        User user = new User().setId(66L).setAge(10).setName("weapon").setGender("male");
-        int result = executor.insert(user);
-        assertEquals(1, result);
-
-        User selectUser = executor.getById(66, User.class);
-        assertEquals("weapon", selectUser.getName());
-        assertEquals("male", selectUser.getGender());
-        assertEquals(10, selectUser.getAge().intValue());
-
-        result = executor.deleteById(66, User.class);
-        assertEquals(1, result);
-
-        selectUser = executor.getById(66, User.class);
-        assertNull(selectUser);
     }
 
 }

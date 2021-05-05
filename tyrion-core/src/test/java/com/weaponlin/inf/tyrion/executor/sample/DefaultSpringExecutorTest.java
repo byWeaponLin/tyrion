@@ -8,9 +8,8 @@ import com.weaponlin.inf.tyrion.dsl.operand.table.TableOperand;
 import com.weaponlin.inf.tyrion.dsl.operand.transform.AggregateFunctionOperand;
 import com.weaponlin.inf.tyrion.dsl.operand.transform.ColumnOperand;
 import com.weaponlin.inf.tyrion.dsl.operand.transform.PlaceholderOperand;
-import com.weaponlin.inf.tyrion.executor.SQLExecutor;
+import com.weaponlin.inf.tyrion.executor.Executor;
 import com.weaponlin.inf.tyrion.sample.entity.CustomUser;
-import com.weaponlin.inf.tyrion.sample.entity.ShardingUser;
 import com.weaponlin.inf.tyrion.sample.entity.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,10 +24,10 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:test_applicationContext.xml"})
-public class DefaultSpringSQLExecutorTest {
+public class DefaultSpringExecutorTest {
 
     @Autowired
-    private SQLExecutor sqlExecutor;
+    private Executor executor;
 
     @Test
     public void test_insert_object() {
@@ -37,14 +36,14 @@ public class DefaultSpringSQLExecutorTest {
         user.setGender("male");
         user.setName("weaponbaba");
         user.setAge(19);
-        int result = sqlExecutor.insert(user);
+        int result = executor.insert(user);
         assertEquals(1, result);
 
         SQLParameter sqlParameter = DSL.delete().from(TableOperand.table(User.class))
                 .where()
                 .and(ColumnOperand.column("id").eq(PlaceholderOperand.value(322)))
                 .build();
-        sqlExecutor.delete(sqlParameter);
+        executor.delete(sqlParameter);
     }
 
     @Test
@@ -55,7 +54,7 @@ public class DefaultSpringSQLExecutorTest {
                 new User().setId(88L).setAge(10).setName("weapon").setGender("male"),
                 new User().setId(99L).setAge(10).setName("weapon").setGender("male")
         );
-        int result = sqlExecutor.insert(lists);
+        int result = executor.insert(lists);
         assertEquals(4, result);
 
         SQLParameter sqlParameter = DSL.delete()
@@ -63,7 +62,7 @@ public class DefaultSpringSQLExecutorTest {
                 .where()
                 .and(ColumnOperand.column("id").in(PlaceholderOperand.values(66, 77, 88, 99)))
                 .build();
-        result = sqlExecutor.delete(sqlParameter);
+        result = executor.delete(sqlParameter);
         assertEquals(4, result);
     }
 
@@ -79,7 +78,7 @@ public class DefaultSpringSQLExecutorTest {
                         .or(ColumnOperand.column("id").gt(PlaceholderOperand.value(0)))
                 )
                 .build();
-        List<User> users = sqlExecutor.selectList(sqlParameter);
+        List<User> users = executor.selectList(sqlParameter);
         System.out.println(users);
     }
 
@@ -92,7 +91,7 @@ public class DefaultSpringSQLExecutorTest {
                 .and(ColumnOperand.column("id").gt(PlaceholderOperand.value(0)))
                 .and(ColumnOperand.column("name").likeMiddle(PlaceholderOperand.value("weapon")))
                 .build();
-        List<User> users = sqlExecutor.selectList(sqlParameter);
+        List<User> users = executor.selectList(sqlParameter);
         System.out.println(users);
     }
 
@@ -105,7 +104,7 @@ public class DefaultSpringSQLExecutorTest {
                 .and(ColumnOperand.column("id").gt(PlaceholderOperand.value(0)))
                 .and(ColumnOperand.column("name").likeMiddle(PlaceholderOperand.value("weapon")))
                 .build();
-        List<User> users = sqlExecutor.selectList(sqlParameter);
+        List<User> users = executor.selectList(sqlParameter);
         System.out.println(users);
     }
 
@@ -114,7 +113,7 @@ public class DefaultSpringSQLExecutorTest {
         SQLParameter<Integer, User> sqlParameter = DSL.<Integer, User>select().column(AggregateFunctionOperand.max("age"))
                 .from(TableOperand.table(User.class))
                 .build(Integer.class);
-        System.out.println(sqlExecutor.selectOne(sqlParameter));
+        System.out.println(executor.selectOne(sqlParameter));
     }
 
     @Test
@@ -125,7 +124,7 @@ public class DefaultSpringSQLExecutorTest {
                 .where()
                 .limit(1)
                 .build(String.class);
-        System.out.println(sqlExecutor.selectOne(sqlParameter));
+        System.out.println(executor.selectOne(sqlParameter));
     }
 
     @Test
@@ -137,7 +136,7 @@ public class DefaultSpringSQLExecutorTest {
                 .where()
                 .groupBy(ColumnOperand.column("name"))
                 .build(CustomUser.class);
-        List<CustomUser> customUsers = sqlExecutor.selectList(sqlParameter);
+        List<CustomUser> customUsers = executor.selectList(sqlParameter);
         System.out.println(customUsers);
     }
 
@@ -150,7 +149,7 @@ public class DefaultSpringSQLExecutorTest {
                 .where()
                 .groupBy(ColumnOperand.column("name"))
                 .build(Map.class);
-        List<Map> customUsers = sqlExecutor.selectList(sqlParameter);
+        List<Map> customUsers = executor.selectList(sqlParameter);
         System.out.println(customUsers);
     }
 
@@ -163,7 +162,7 @@ public class DefaultSpringSQLExecutorTest {
 //                .where()
 //                .and(ColumnOperand.column("id").gt(PlaceholderOperand.value(0)))
 //                .build();
-//        List<ShardingUser> users = sqlExecutor.selectList(sqlParameter);
+//        List<ShardingUser> users = executor.selectList(sqlParameter);
 //        System.out.println(users);
 //    }
 
@@ -173,7 +172,7 @@ public class DefaultSpringSQLExecutorTest {
                 .columns("id", "name", "gender", "age")
                 .values(2, "weaponbaba", "m", 24)
                 .build();
-        int result = sqlExecutor.insert(sqlParameter);
+        int result = executor.insert(sqlParameter);
         assertEquals(1, result);
     }
 
@@ -184,7 +183,7 @@ public class DefaultSpringSQLExecutorTest {
                 .where()
                 .and(ColumnOperand.column("id").eq(PlaceholderOperand.value(2)))
                 .build();
-        int result = sqlExecutor.update(sqlParameter);
+        int result = executor.update(sqlParameter);
         assertEquals(1, result);
     }
 
@@ -194,7 +193,7 @@ public class DefaultSpringSQLExecutorTest {
                 .where()
                 .and(ColumnOperand.column("id").eq(PlaceholderOperand.value(2)))
                 .build();
-        int result = sqlExecutor.delete(sqlParameter);
+        int result = executor.delete(sqlParameter);
     }
 
 }

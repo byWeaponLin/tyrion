@@ -7,13 +7,12 @@ import com.weaponlin.inf.tyrion.dsl.operand.expression.ExpressionOperand;
 import com.weaponlin.inf.tyrion.dsl.operand.table.TableOperand;
 import com.weaponlin.inf.tyrion.enums.CompareOperator;
 import com.weaponlin.inf.tyrion.enums.SQLType;
-import com.weaponlin.inf.tyrion.executor.SQLExecutor;
+import com.weaponlin.inf.tyrion.executor.Executor;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.util.Collection;
 import java.util.List;
 
-import static com.google.common.base.Preconditions.*;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static java.util.stream.Collectors.joining;
@@ -33,8 +32,8 @@ public class UpdateBuilder<R, T> extends AbstractBuilder<R, T> {
         assignments = Lists.newArrayList();
     }
 
-    public UpdateBuilder(SQLExecutor sqlExecutor) {
-        super(SQL_TYPE, sqlExecutor);
+    public UpdateBuilder(Executor executor) {
+        super(SQL_TYPE, executor);
         assignments = Lists.newArrayList();
     }
 

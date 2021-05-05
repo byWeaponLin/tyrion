@@ -9,10 +9,11 @@
 
 ## Develop Schedule(in progress)
 - [x] SQL DSL
+- [ ] custom datasource pool
 - [ ] Executor
-- [ ] plugins 
 - [ ] integrate spring、spring boot
 - [ ] support multiple tables join
+- [ ] plugins 
 
 ## Quick Start
 

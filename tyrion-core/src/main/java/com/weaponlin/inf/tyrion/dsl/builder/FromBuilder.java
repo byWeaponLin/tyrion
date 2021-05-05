@@ -19,13 +19,13 @@ public class FromBuilder<R, T> extends AbstractBuilder<R, T> {
     private Builder previousBuilder;
 
     FromBuilder(TableOperand operand, SelectBuilder selectBuilder) {
-        super(selectBuilder.sqlType, selectBuilder.sqlExecutor);
+        super(selectBuilder.sqlType, selectBuilder.executor);
         this.operand = checkNotNull(operand, "Table name shouldn't be null");
         this.previousBuilder = checkNotNull(selectBuilder, "Select part shouldn't be null");
     }
 
     FromBuilder(TableOperand operand, DeleteBuilder deleteBuilder) {
-        super(deleteBuilder.sqlType, deleteBuilder.sqlExecutor);
+        super(deleteBuilder.sqlType, deleteBuilder.executor);
         this.operand = checkNotNull(operand, "Table name shouldn't be null");
         this.previousBuilder = checkNotNull(deleteBuilder, "Delete part shouldn't be null");
     }

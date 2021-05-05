@@ -8,7 +8,7 @@ import com.weaponlin.inf.tyrion.dsl.operand.transform.ColumnOperand;
 import com.weaponlin.inf.tyrion.dsl.operand.transform.PlaceholderOperand;
 import com.weaponlin.inf.tyrion.dsl.operand.transform.VariableOperand;
 import com.weaponlin.inf.tyrion.enums.SQLType;
-import com.weaponlin.inf.tyrion.executor.SQLExecutor;
+import com.weaponlin.inf.tyrion.executor.Executor;
 import com.weaponlin.inf.tyrion.executor.exception.TyrionRuntimException;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -40,8 +40,8 @@ public class InsertBuilder<R, T> extends AbstractBuilder<R, T> {
         this.values = Lists.newArrayList();
     }
 
-    public InsertBuilder(SQLExecutor sqlExecutor) {
-        super(SQL_TYPE, sqlExecutor);
+    public InsertBuilder(Executor executor) {
+        super(SQL_TYPE, executor);
         this.columns = Lists.newArrayList();
         this.values = Lists.newArrayList();
     }

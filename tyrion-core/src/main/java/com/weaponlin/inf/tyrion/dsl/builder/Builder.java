@@ -2,7 +2,7 @@ package com.weaponlin.inf.tyrion.dsl.builder;
 
 import com.weaponlin.inf.tyrion.dsl.SQLParameter;
 import com.weaponlin.inf.tyrion.enums.SQLType;
-import com.weaponlin.inf.tyrion.executor.SQLExecutor;
+import com.weaponlin.inf.tyrion.executor.Executor;
 
 import java.io.Serializable;
 import java.util.List;
@@ -25,7 +25,7 @@ public interface Builder<R, T> extends Serializable {
 
     SQLType getSQLType();
 
-    SQLExecutor getSQLExecutor();
+    Executor getSQLExecutor();
 
     T fetchOne();
 

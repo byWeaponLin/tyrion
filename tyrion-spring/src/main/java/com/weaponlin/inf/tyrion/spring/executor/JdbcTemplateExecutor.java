@@ -1,16 +1,17 @@
-package com.weaponlin.inf.tyrion.executor;
+package com.weaponlin.inf.tyrion.spring.executor;
 
 import com.google.common.collect.Lists;
 import com.weaponlin.inf.tyrion.annotation.Column;
 import com.weaponlin.inf.tyrion.dsl.DSL;
 import com.weaponlin.inf.tyrion.dsl.SQLParameter;
+import com.weaponlin.inf.tyrion.dsl.builder.SelectBuilder;
 import com.weaponlin.inf.tyrion.dsl.operand.transform.ColumnOperand;
+import com.weaponlin.inf.tyrion.executor.Executor;
 import com.weaponlin.inf.tyrion.executor.exception.TyrionRuntimException;
+import com.weaponlin.inf.tyrion.executor.result.ResultMapHandler;
+import com.weaponlin.inf.tyrion.spring.executor.result.SpringResultMapHandler;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.lang.reflect.Field;
@@ -22,21 +23,18 @@ import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.weaponlin.inf.tyrion.dsl.operand.table.TableOperand.table;
-import static com.weaponlin.inf.tyrion.dsl.operand.transform.ColumnOperand.column;
-import static com.weaponlin.inf.tyrion.dsl.operand.transform.PlaceholderOperand.value;
 import static java.util.stream.Collectors.toList;
 
 /**
- * a simple SQLExecutor implement, you can write a custom class that implements SQLExecutor
+ * JdbcTemplate
  */
-public class DefaultSpringSQLExecutor implements SQLExecutor {
+public class JdbcTemplateExecutor implements Executor {
 
-//    @Autowired
-//    private JdbcOperations jdbcOperations;
+    private final JdbcTemplate jdbcTemplate;
 
-    @Autowired
-    @Qualifier("jdbcTemplate")
-    private JdbcTemplate jdbcOperations;
+    public JdbcTemplateExecutor(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     @Override
     public <R, T> R selectOne(SQLParameter<R, T> sqlParameter) {
@@ -49,8 +47,8 @@ public class DefaultSpringSQLExecutor implements SQLExecutor {
 
     @Override
     public <R, T> List<R> selectList(SQLParameter<R, T> sqlParameter) {
-        return jdbcOperations.query(sqlParameter.getSql(), sqlParameter.getParameters().toArray(),
-                sqlParameter.getResultMapHandler());
+        return jdbcTemplate.query(sqlParameter.getSql(), sqlParameter.getParameters().toArray(),
+                new SpringResultMapHandler<>(sqlParameter.getRowMaps(), sqlParameter.getResultType()));
     }
 
     @Override
@@ -143,33 +141,16 @@ public class DefaultSpringSQLExecutor implements SQLExecutor {
     }
 
     @Override
-    public <T> int deleteById(Object id, Class<T> entityClass) {
-        String idColumn = getIdColumn(entityClass);
-        SQLParameter sqlParameter = DSL.delete()
-                .from(table(entityClass))
-                .where()
-                .and(column(idColumn).eq(value(id)))
-                .build();
-        return update0(sqlParameter);
-    }
-
-    @Override
-    public <T> T getById(Object id, Class<T> entityClass) {
-        String idColumn = getIdColumn(entityClass);
-        SQLParameter<T, T> sqlParameter = DSL.<T, T>select().columns()
-                .from(table(entityClass))
-                .where().and(column(idColumn).eq(value(id)))
-                .build();
-
-        return selectOne(sqlParameter);
+    public <T> ResultMapHandler<T> getResultMapHandler(List<SelectBuilder.RowMap> rowMaps, Class<T> resultType) {
+        return new SpringResultMapHandler<>(rowMaps, resultType);
     }
 
     private int update0(SQLParameter sqlParameter) {
-        return jdbcOperations.update(sqlParameter.getSql(), sqlParameter.getParameters().toArray());
+        return jdbcTemplate.update(sqlParameter.getSql(), sqlParameter.getParameters().toArray());
     }
 
     private int batchUpdate(SQLParameter sqlParameter, List<Object[]> partitionObjects) {
-        return Arrays.stream(jdbcOperations.batchUpdate(sqlParameter.getSql(), partitionObjects))
+        return Arrays.stream(jdbcTemplate.batchUpdate(sqlParameter.getSql(), partitionObjects))
                 .sum();
     }
 }

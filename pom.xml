@@ -10,6 +10,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>tyrion-core</module>
+        <module>tyrion-spring</module>
     </modules>
 
     <name>tyrion</name>
@@ -26,6 +27,16 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.weaponlin.inf.tyrion</groupId>
+                <artifactId>tyrion-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.weaponlin.inf.tyrion</groupId>
+                <artifactId>tyrion-spring</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>

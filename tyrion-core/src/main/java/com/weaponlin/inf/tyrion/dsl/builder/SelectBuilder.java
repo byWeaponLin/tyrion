@@ -9,7 +9,7 @@ import com.weaponlin.inf.tyrion.dsl.operand.table.TableOperand;
 import com.weaponlin.inf.tyrion.dsl.operand.transform.ColumnOperand;
 import com.weaponlin.inf.tyrion.dsl.operand.transform.TransformOperand;
 import com.weaponlin.inf.tyrion.enums.SQLType;
-import com.weaponlin.inf.tyrion.executor.SQLExecutor;
+import com.weaponlin.inf.tyrion.executor.Executor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -48,8 +48,8 @@ public class SelectBuilder<R, T> extends AbstractBuilder<R, T> {
         this.rowMaps = Lists.newArrayList();
     }
 
-    public SelectBuilder(SQLExecutor sqlExecutor) {
-        super(SQL_TYPE, sqlExecutor);
+    public SelectBuilder(Executor executor) {
+        super(SQL_TYPE, executor);
         this.columns = Lists.newArrayList();
         this.rowMaps = Lists.newArrayList();
     }
