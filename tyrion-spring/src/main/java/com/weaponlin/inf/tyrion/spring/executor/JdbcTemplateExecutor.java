@@ -2,6 +2,7 @@ package com.weaponlin.inf.tyrion.spring.executor;
 
 import com.google.common.collect.Lists;
 import com.weaponlin.inf.tyrion.annotation.Column;
+import com.weaponlin.inf.tyrion.datasource.PooledDatasource;
 import com.weaponlin.inf.tyrion.dsl.DSL;
 import com.weaponlin.inf.tyrion.dsl.SQLParameter;
 import com.weaponlin.inf.tyrion.dsl.builder.SelectBuilder;
@@ -30,10 +31,13 @@ import static java.util.stream.Collectors.toList;
  */
 public class JdbcTemplateExecutor implements Executor {
 
-    private final JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
 
-    public JdbcTemplateExecutor(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    private final PooledDatasource pooledDatasource;
+
+    public JdbcTemplateExecutor(PooledDatasource pooledDatasource) {
+        this.pooledDatasource = pooledDatasource;
+        this.jdbcTemplate = new JdbcTemplate(pooledDatasource);
     }
 
     @Override
