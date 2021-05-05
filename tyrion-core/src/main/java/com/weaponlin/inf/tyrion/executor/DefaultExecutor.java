@@ -11,10 +11,8 @@ import com.weaponlin.inf.tyrion.executor.exception.TyrionRuntimException;
 import com.weaponlin.inf.tyrion.executor.result.DefaultResultMapHandler;
 import com.weaponlin.inf.tyrion.executor.result.ResultMapHandler;
 import org.apache.commons.collections.CollectionUtils;
-import org.springframework.beans.BeanUtils;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -146,10 +144,9 @@ public class DefaultExecutor implements Executor {
                 .stream(e.getClass().getDeclaredFields())
                 .filter(f -> f.isAnnotationPresent(Column.class))
                 .map(f -> {
-                    // TODO refactor
-                    Method readMethod = BeanUtils.getPropertyDescriptor(t.getClass(), f.getName()).getReadMethod();
+                    f.setAccessible(true);
                     try {
-                        return readMethod.invoke(e);
+                        return f.get(e);
                     } catch (Exception ex) {
                         throw new TyrionRuntimException("get value failed", ex);
                     }

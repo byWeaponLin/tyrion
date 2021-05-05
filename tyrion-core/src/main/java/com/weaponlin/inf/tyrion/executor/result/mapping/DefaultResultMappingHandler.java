@@ -7,9 +7,8 @@ import com.weaponlin.inf.tyrion.executor.exception.TyrionRuntimException;
 import com.weaponlin.inf.tyrion.executor.result.type.TypeHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
-import org.springframework.beans.BeanUtils;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.util.List;
 
@@ -66,8 +65,9 @@ public class DefaultResultMappingHandler implements ResultMappingHandler {
             T t = resultType.newInstance();
             for (RowMap rowMap : rowMaps) {
                 Object value = TypeHandler.convert(rowMap.getJavaType(), rs, rowMap.getColumn());
-                Method writeMethod = BeanUtils.getPropertyDescriptor(t.getClass(), rowMap.getProperty()).getWriteMethod();
-                writeMethod.invoke(t, value);
+                Field field = resultType.getDeclaredField(rowMap.getProperty());
+                field.setAccessible(true);
+                field.set(t, value);
             }
             return t;
         } catch (Exception e) {
