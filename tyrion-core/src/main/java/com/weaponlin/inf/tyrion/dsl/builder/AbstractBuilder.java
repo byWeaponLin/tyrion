@@ -22,9 +22,11 @@ public abstract class AbstractBuilder<R, T> implements Builder<R, T> {
     @Override
     public T fetchOne() {
         if (isSelect()) {
-            return Optional.ofNullable(executor)
-                    .map(executor -> executor.selectOne(build()))
-                    .orElseThrow(() -> new TyrionRuntimException("executor is null, please set it."));
+            if (executor != null) {
+                return executor.selectOne(build());
+            } else {
+                throw new TyrionRuntimException("executor is null, please set it.");
+            }
         }
         throw new UnsupportedOperationException("only support select operation");
     }
@@ -32,9 +34,11 @@ public abstract class AbstractBuilder<R, T> implements Builder<R, T> {
     @Override
     public R fetchOne(Class<R> resultTypeClass) {
         if (isSelect()) {
-            return Optional.ofNullable(executor)
-                    .map(executor -> executor.selectOne(build(resultTypeClass)))
-                    .orElseThrow(() -> new TyrionRuntimException("executor is null, please set it."));
+            if (executor != null) {
+                return executor.selectOne(build(resultTypeClass));
+            } else {
+                throw new TyrionRuntimException("executor is null, please set it.");
+            }
         }
         throw new UnsupportedOperationException("only support select operation");
     }
@@ -42,9 +46,11 @@ public abstract class AbstractBuilder<R, T> implements Builder<R, T> {
     @Override
     public List<T> fetch() {
         if (isSelect()) {
-            return Optional.ofNullable(executor)
-                    .map(executor -> executor.selectList(build()))
-                    .orElseThrow(() -> new TyrionRuntimException("executor is null, please set it."));
+            if (executor != null) {
+                return executor.selectList(build());
+            } else{
+                throw new TyrionRuntimException("executor is null, please set it.");
+            }
         }
         throw new UnsupportedOperationException("only support select operation");
     }
@@ -52,15 +58,18 @@ public abstract class AbstractBuilder<R, T> implements Builder<R, T> {
     @Override
     public List<R> fetch(Class<R> resultTypeClass) {
         if (isSelect()) {
-            return Optional.ofNullable(executor)
-                    .map(executor -> executor.selectList(build(resultTypeClass)))
-                    .orElseThrow(() -> new TyrionRuntimException("executor is null, please set it."));
+            if (executor != null) {
+                return executor.selectList(build(resultTypeClass));
+            } else {
+                throw new TyrionRuntimException("executor is null, please set it.");
+            }
         }
         throw new UnsupportedOperationException("only support select operation");
     }
 
     /**
      * only support insert/update/delete operation
+     *
      * @return
      */
     @Override
@@ -74,7 +83,7 @@ public abstract class AbstractBuilder<R, T> implements Builder<R, T> {
             return executor.update(build());
         } else if (sqlType == SQLType.INSERT) {
             return executor.insert(build());
-        } else if (sqlType ==  SQLType.DELETE) {
+        } else if (sqlType == SQLType.DELETE) {
             return executor.delete(build());
         } else {
             throw new TyrionRuntimException("Illegal sqlType " + sqlType.name());

@@ -14,6 +14,7 @@
 - [ ] integrate spring、spring boot
 - [ ] support multiple tables join
 - [ ] plugins 
+- [ ] return auto generate key
 
 ## Quick Start
 
