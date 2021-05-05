@@ -26,8 +26,8 @@ public class PlaceholderOperandTest extends BaseTest {
 
     @Test
     public void test_values_throw_exception_if_parameter_is_null() {
-        thrown.expect(NullPointerException.class);
-        thrown.expectMessage("values can not be null, If only and have a null value, please use new Object[]{null}.");
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("values's size can not be zero.");
         VariableOperand values = PlaceholderOperand.values();
     }
 

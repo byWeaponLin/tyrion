@@ -4,7 +4,17 @@
 
 ## 1 Architecture
 
+TODO 整体情况
+
+### 1.1 DSL
 TODO
+
+### 1.2 连接池
+TODO
+
+### 1.3 
+TODO
+
 
 ## 2 Quick Start
 
@@ -170,15 +180,25 @@ public class SpringApplication {
 ```
 
 
-## 3 Develop Schedule(in progress)
+## 3 开发进度(in progress)
 - [x] SQL DSL
 - [x] 自定义数据源缓存池
 - [x] 执行器，包含原生实现 & Spring JdbcTemplate集成
+- [ ] 支持分库分表
 - [ ] 支持多表连接查询
 - [ ] 集成Spring Boot
 - [ ] 支持返回主键
 - [ ] 插件化 
 
+## 4 测试相关
+
+(1) tyrion-core 测试覆盖率
+
+![tyrion-core 测试覆盖率](imgs/tyrion-core-测试覆盖率.png)
+
+(2) tyrion-spring 测试覆盖率
+
+![tyrion-spring 测试覆盖率](imgs/tyrion-spring-测试覆盖率.png)
 
 
 
