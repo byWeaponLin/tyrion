@@ -1,12 +1,27 @@
 package com.weaponlin.inf.tyrion.executor;
 
-//import org.springframework.test.context.ContextConfiguration;
-//import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import com.google.common.collect.Lists;
+import com.weaponlin.inf.tyrion.sample.entity.User;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(locations = {"classpath:test_applicationContext.xml"})
+import java.util.List;
+
+import static com.weaponlin.inf.tyrion.dsl.operand.table.TableOperand.table;
+import static com.weaponlin.inf.tyrion.dsl.operand.transform.ColumnOperand.column;
+import static com.weaponlin.inf.tyrion.dsl.operand.transform.PlaceholderOperand.value;
+import static com.weaponlin.inf.tyrion.dsl.operand.transform.PlaceholderOperand.values;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:test_applicationContext.xml"})
 public class DefaultSQLExecutorTest {
-/*
+
     @Autowired
     @Qualifier("defaultSQLExecutor")
     private DefaultSQLExecutor executor;
@@ -15,7 +30,7 @@ public class DefaultSQLExecutorTest {
     public void test_select() {
         List<User> users = executor.<User, User>select()
                 .columns()
-                .from(TableOperand.table(User.class))
+                .from(table(User.class))
                 .fetch();
         System.out.println(users);
     }
@@ -23,15 +38,15 @@ public class DefaultSQLExecutorTest {
     @Test
     public void test_insert() {
         int rows = executor.insert()
-                .into(TableOperand.table(User.class))
+                .into(table(User.class))
                 .columns("id", "name", "age", "gender")
                 .values(99, "weapon", 22, "male")
                 .exec();
         assertEquals(1, rows);
 
-        rows = executor.delete().from(TableOperand.table(User.class))
+        rows = executor.delete().from(table(User.class))
                 .where()
-                .and(ColumnOperand.column("id").eq(PlaceholderOperand.value(99)))
+                .and(column("id").eq(value(99)))
                 .exec();
         assertEquals(1, rows);
     }
@@ -43,9 +58,9 @@ public class DefaultSQLExecutorTest {
         assertEquals(1, result);
 
         result = executor.delete()
-                .from(TableOperand.table(User.class))
+                .from(table(User.class))
                 .where()
-                .and(ColumnOperand.column("id").eq(PlaceholderOperand.value(66)))
+                .and(column("id").eq(value(66)))
                 .exec();
         assertEquals(1, result);
     }
@@ -62,9 +77,9 @@ public class DefaultSQLExecutorTest {
         assertEquals(4, result);
 
         result = executor.delete()
-                .from(TableOperand.table(User.class))
+                .from(table(User.class))
                 .where()
-                .and(ColumnOperand.column("id").in(PlaceholderOperand.values(66, 77, 88, 99)))
+                .and(column("id").in(values(66, 77, 88, 99)))
                 .exec();
         assertEquals(4, result);
     }
@@ -87,5 +102,4 @@ public class DefaultSQLExecutorTest {
         assertNull(selectUser);
     }
 
- */
 }

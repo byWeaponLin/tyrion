@@ -9,7 +9,9 @@ import com.weaponlin.inf.tyrion.executor.exception.TyrionRuntimException;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -29,8 +31,12 @@ import static java.util.stream.Collectors.toList;
  */
 public class DefaultSpringSQLExecutor implements SQLExecutor {
 
+//    @Autowired
+//    private JdbcOperations jdbcOperations;
+
     @Autowired
-    private JdbcOperations jdbcOperations;
+    @Qualifier("jdbcTemplate")
+    private JdbcTemplate jdbcOperations;
 
     @Override
     public <R, T> R selectOne(SQLParameter<R, T> sqlParameter) {

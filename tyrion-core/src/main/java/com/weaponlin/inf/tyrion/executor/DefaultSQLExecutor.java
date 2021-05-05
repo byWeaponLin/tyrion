@@ -46,13 +46,4 @@ public class DefaultSQLExecutor {
     public <T> int deleteById(Object id, Class<T> entityClass) {
         return sqlExecutor.deleteById(id, entityClass);
     }
-
-    public <T> int diff(List<T> oldList, List<T> newList) {
-        // TODO
-        return 0;
-    }
-
-    /**
-     * TODO add custom function
-     */
 }

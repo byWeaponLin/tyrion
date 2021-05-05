@@ -1,10 +1,20 @@
 # tyrion
-轻量级的`SQL Generator`  
 
-## Design
+一款轻量级的持久层框架  
+
+## Architecture
 
 ![](imgs/design.png)
 
-## Usage(TBD)
+
+## Develop Schedule(in progress)
+- [x] SQL DSL
+- [ ] Executor
+- [ ] plugins 
+- [ ] integrate spring、spring boot
+- [ ] support multiple tables join
+
+## Quick Start
+
 
 

@@ -1,12 +1,32 @@
 package com.weaponlin.inf.tyrion.executor.sample;
 
-//import org.springframework.test.context.ContextConfiguration;
-//import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import com.google.common.collect.Lists;
+import com.weaponlin.inf.tyrion.dsl.DSL;
+import com.weaponlin.inf.tyrion.dsl.SQLParameter;
+import com.weaponlin.inf.tyrion.dsl.operand.expression.NestedExpressionOperand;
+import com.weaponlin.inf.tyrion.dsl.operand.table.TableOperand;
+import com.weaponlin.inf.tyrion.dsl.operand.transform.AggregateFunctionOperand;
+import com.weaponlin.inf.tyrion.dsl.operand.transform.ColumnOperand;
+import com.weaponlin.inf.tyrion.dsl.operand.transform.PlaceholderOperand;
+import com.weaponlin.inf.tyrion.executor.SQLExecutor;
+import com.weaponlin.inf.tyrion.sample.entity.CustomUser;
+import com.weaponlin.inf.tyrion.sample.entity.ShardingUser;
+import com.weaponlin.inf.tyrion.sample.entity.User;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(locations = {"classpath:test_applicationContext.xml"})
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:test_applicationContext.xml"})
 public class DefaultSpringSQLExecutorTest {
-/*
+
     @Autowired
     private SQLExecutor sqlExecutor;
 
@@ -134,18 +154,18 @@ public class DefaultSpringSQLExecutorTest {
         System.out.println(customUsers);
     }
 
-    @Test
-    public void test_select_list_with_sharding() {
-        long shardingId = 5555555;
-        SQLParameter<ShardingUser, ShardingUser> sqlParameter = DSL.<ShardingUser, ShardingUser>select()
-                .column("id", "name", "gender", "age")
-                .from(TableOperand.table(ShardingUser.class, shardingId))
-                .where()
-                .and(ColumnOperand.column("id").gt(PlaceholderOperand.value(0)))
-                .build();
-        List<ShardingUser> users = sqlExecutor.selectList(sqlParameter);
-        System.out.println(users);
-    }
+//    @Test
+//    public void test_select_list_with_sharding() {
+//        long shardingId = 5555555;
+//        SQLParameter<ShardingUser, ShardingUser> sqlParameter = DSL.<ShardingUser, ShardingUser>select()
+//                .column("id", "name", "gender", "age")
+//                .from(TableOperand.table(ShardingUser.class, shardingId))
+//                .where()
+//                .and(ColumnOperand.column("id").gt(PlaceholderOperand.value(0)))
+//                .build();
+//        List<ShardingUser> users = sqlExecutor.selectList(sqlParameter);
+//        System.out.println(users);
+//    }
 
     @Test
     public void test_insert() {
@@ -177,5 +197,4 @@ public class DefaultSpringSQLExecutorTest {
         int result = sqlExecutor.delete(sqlParameter);
     }
 
- */
 }
