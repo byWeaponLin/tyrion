@@ -17,9 +17,19 @@ public class ValueOperand extends VariableOperand {
         super(values);
     }
 
+    ValueOperand(List<?> values) {
+        super(values);
+    }
+
     public static VariableOperand values(Object... values) {
         checkNotNull(values, "values can not be null, If only and have a null value, please use new Object[]{null}.");
         checkArgument(values.length > 0, "values's size can not be zero.");
+        return new ValueOperand(values);
+    }
+
+    public static VariableOperand values(List<?> values) {
+        checkNotNull(values, "values can not be null, If only and have a null value, please use new Object[]{null}.");
+        checkArgument(values.size() > 0, "values's size can not be zero.");
         return new ValueOperand(values);
     }
 

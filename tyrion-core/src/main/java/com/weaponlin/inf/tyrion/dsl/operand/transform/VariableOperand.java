@@ -17,6 +17,11 @@ public abstract class VariableOperand extends TransformOperand {
         super.parameters = Arrays.asList(values);
     }
 
+    VariableOperand(List<?> values) {
+        super("");
+        super.parameters = (List<Object>) values;
+    }
+
     @Override
     public ExpressionOperand toExpression() {
         throw new UnsupportedOperationException("can not convert VariableOperand to ExpressionOperand");

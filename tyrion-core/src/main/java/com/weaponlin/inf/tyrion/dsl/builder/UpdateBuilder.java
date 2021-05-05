@@ -43,6 +43,11 @@ public class UpdateBuilder<R, T> extends AbstractBuilder<R, T> {
         return this;
     }
 
+    public UpdateBuilder table(Class<T> table) {
+        checkNotNull(table, "table can not be null");
+        return table(TableOperand.table(table));
+    }
+
     public UpdateBuilder set(CompareExpressionOperand assignment) {
         checkNotNull(assignment, "assignment can not be null");
         checkNotNull(assignment.getOperator() == CompareOperator.EQ, "assignment only support EQ-Operator(=)");

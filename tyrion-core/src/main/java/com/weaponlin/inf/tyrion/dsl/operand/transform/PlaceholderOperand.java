@@ -3,6 +3,7 @@ package com.weaponlin.inf.tyrion.dsl.operand.transform;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -16,9 +17,19 @@ public class PlaceholderOperand extends VariableOperand {
         super(values);
     }
 
+    private PlaceholderOperand(List<?> values) {
+        super(values);
+    }
+
     public static VariableOperand values(Object... values) {
         checkNotNull(values, "values can not be null, If only and have a null value, please use new Object[]{null}.");
         checkArgument(values.length > 0, "values's size can not be zero.");
+        return new PlaceholderOperand(values);
+    }
+
+    public static VariableOperand values(List<?> values) {
+        checkNotNull(values, "values can not be null, If only and have a null value, please use new Object[]{null}.");
+        checkArgument(values.size() > 0, "values's size can not be zero.");
         return new PlaceholderOperand(values);
     }
 

@@ -209,12 +209,22 @@ public abstract class TransformOperand extends Operand {
         return in(PlaceholderOperand.values(objects));
     }
 
+    public InExpressionOperand in(List<Object> objects) {
+        checkArgument(objects != null && objects.size() > 0, "target values cant be null and length must great than 1");
+        return in(PlaceholderOperand.values(objects));
+    }
+
     public InExpressionOperand notIn(TransformOperand operand) {
         return new InExpressionOperand(this, CompareOperator.NOT_IN, operand);
     }
 
     public InExpressionOperand notIn(Object... objects) {
         checkArgument(objects != null && objects.length > 0, "target values cant be null and length must great than 1");
+        return notIn(PlaceholderOperand.values(objects));
+    }
+
+    public InExpressionOperand notIn(List<Object> objects) {
+        checkArgument(objects != null && objects.size() > 0, "target values cant be null and length must great than 1");
         return notIn(PlaceholderOperand.values(objects));
     }
 

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 1.配置数据源 -->
+    <bean id="dataSource" class="com.weaponlin.inf.tyrion.datasource.PooledDatasource">
+        <constructor-arg name="driver" value="com.mysql.cj.jdbc.Driver"></constructor-arg>
+        <!-- TODO confirm rewriteBatchedStatements=true -->
+        <constructor-arg name="url"
+                  value="jdbc:mysql://localhost:3306/demo?characterEncoding=utf8&amp;useSSL=false&amp;serverTimezone=UTC"></constructor-arg>
+        <constructor-arg name="username" value="root"></constructor-arg>
+        <constructor-arg name="password" value="weaponlin"></constructor-arg>
+    </bean>
+
+    <bean id="jdbcTemplateExecutor" class="com.weaponlin.inf.tyrion.spring.executor.JdbcTemplateExecutor">
+        <constructor-arg name="pooledDatasource" ref="dataSource"/>
+    </bean>
+
+    <bean id="userDao" class="com.weaponlin.inf.tyrion.demo.dao.impl.UserDaoImpl">
+        <constructor-arg name="executor" ref="jdbcTemplateExecutor"/>
+    </bean>
+</beans>

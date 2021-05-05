@@ -29,7 +29,7 @@ public class ValueOperandTest extends BaseTest {
     public void test_values_throw_exception_if_parameter_is_null() {
         thrown.expect(NullPointerException.class);
         thrown.expectMessage("values can not be null, If only and have a null value, please use new Object[]{null}.");
-        VariableOperand values = ValueOperand.values(null);
+        VariableOperand values = ValueOperand.values();
     }
 
     @Test
