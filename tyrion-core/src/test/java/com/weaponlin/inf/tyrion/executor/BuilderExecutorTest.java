@@ -2,11 +2,13 @@ package com.weaponlin.inf.tyrion.executor;
 
 import com.google.common.collect.Lists;
 import com.weaponlin.inf.tyrion.datasource.PooledDatasource;
+import com.weaponlin.inf.tyrion.dsl.builder.WhereBuilder;
 import com.weaponlin.inf.tyrion.sample.entity.User;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.weaponlin.inf.tyrion.dsl.operand.table.TableOperand.table;
 import static com.weaponlin.inf.tyrion.dsl.operand.transform.ColumnOperand.column;
@@ -100,4 +102,33 @@ public class BuilderExecutorTest {
         assertEquals(4, result);
     }
 
+    @Test
+    public void get_data_with_map() {
+        List<Object> lists = Lists.newArrayList(
+                new User().setId(66L).setAge(10).setName("weapon").setGender("male")
+        );
+
+        int result = builderExecutor.batchInsert(lists);
+        assertEquals(1, result);
+
+        Map map = builderExecutor.<Map, User>select()
+                .columns()
+                .from(table(User.class))
+                .where()
+                .and(column("id").eq(value(66)))
+                .fetchOne(Map.class);
+
+        assertEquals(66L, map.get("id"));
+        assertEquals(10, map.get("age"));
+        assertEquals("weapon", map.get("name"));
+        assertEquals("male", map.get("gender"));
+
+
+        result = builderExecutor.delete()
+                .from(table(User.class))
+                .where()
+                .and(column("id").in(values(66, 77, 88, 99)))
+                .exec();
+        assertEquals(1, result);
+    }
 }

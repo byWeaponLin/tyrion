@@ -10,6 +10,7 @@ import com.weaponlin.inf.tyrion.dsl.operand.transform.ColumnOperand;
 import com.weaponlin.inf.tyrion.dsl.operand.transform.TransformOperand;
 import com.weaponlin.inf.tyrion.enums.SQLType;
 import com.weaponlin.inf.tyrion.executor.Executor;
+import com.weaponlin.inf.tyrion.executor.exception.TyrionRuntimException;
 import lombok.Data;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -110,6 +111,12 @@ public class SelectBuilder<R, T> extends AbstractBuilder<R, T> {
     }
 
     public FromBuilder<R, T> from(TableOperand operand) {
+        if (operand == null) {
+            throw new TyrionRuntimException("table not found");
+        }
+        if (CollectionUtils.isEmpty(rowMaps)) {
+            setRowMap(operand.getColumns());
+        }
         return new FromBuilder<>(operand, this);
     }
 
