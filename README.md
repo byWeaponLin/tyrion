@@ -7,10 +7,60 @@
 TODO 整体情况
 
 ### 1.1 DSL
-TODO
+
+![DSL设计一览](imgs/DSL设计一览.png)
 
 ### 1.2 连接池
-TODO
+
+连接是非常宝贵的资源，频繁地创建和销毁连接会导致应用性能差，因此采用连接池来缓存连接，不需要频繁的建立和销毁。
+
+（1）首先我们定义了一个连接池
+```java
+public class ConnectionPool {
+
+    /**
+     * 空闲连接
+     */
+    private LinkedList<PooledConnection> idleConnections;
+    /**
+     * 繁忙连接
+     */
+    private LinkedList<PooledConnection> activeConnections;
+}
+```
+
+（2）初始化连接池
+
+```java
+public void initConnectionPool() {
+    synchronized (ConnectionPool.class) {
+        for (int i = 0; i < poolSize; i++) {
+            try {
+                Connection connection = DriverManager.getConnection(url, username, password);
+                PooledConnection pooledConnection = new PooledConnection(connection, connectionPool);
+                connectionPool.addPool(pooledConnection);
+            } catch (Exception e) {
+                log.error("init connection pool failed", e);
+            }
+        }
+    }
+}
+```
+
+（3）回收连接而不是销毁
+
+```java
+@Override
+public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    if ("close".equals(method.getName())) {
+        connectionPool.recycle(this);
+        return null;
+    } else {
+        return method.invoke(connection, args);
+    }
+}
+```
+
 
 ### 1.3 
 TODO
@@ -20,7 +70,7 @@ TODO
 
 在开始之前，先介绍一下一些约定
 
-(1) 我们需要在实体类上标注@Table注解，同时需要填写database和table，其次在属性上面需要添加@Column注解，表明该属性对应数据库表的字段名
+(1) 我们需要在实体类上标注@Table注解，同时需要填写database和table，其次在属性上面需要添加@Column注解，表明该属性对应数据库表的字段名。
 ```java
 @Table(database = "demo", table = "user")
 public class User {
@@ -188,6 +238,7 @@ public class SpringApplication {
 - [ ] 支持分库分表
 - [ ] 支持原生SQL
 - [ ] 支持多表连接查询
+- [ ] 支持子查询
 - [ ] 集成Spring Boot
 - [ ] 支持返回主键
 - [ ] 插件化 

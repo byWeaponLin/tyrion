@@ -31,7 +31,6 @@ public class PooledConnection implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         if ("close".equals(method.getName())) {
-            // TODO may be error
             connectionPool.recycle(this);
             return null;
         } else {

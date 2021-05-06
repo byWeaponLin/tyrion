@@ -11,7 +11,13 @@ import java.util.LinkedList;
 @Getter
 public class ConnectionPool {
 
+    /**
+     * 空闲连接
+     */
     private LinkedList<PooledConnection> idleConnections;
+    /**
+     * 繁忙连接
+     */
     private LinkedList<PooledConnection> activeConnections;
 
     public ConnectionPool() {
