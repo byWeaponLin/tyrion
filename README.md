@@ -40,9 +40,10 @@ public class User {
 }
 ```
 
-(2) UserDao & UserDaoImpl
-UserDao定义接口
+(2) Executor用法
+
 ```java
+// 定义UserDao接口
 public interface UserDao {
     List getAllUser();
     int addUser(User user);
@@ -185,6 +186,7 @@ public class SpringApplication {
 - [x] 自定义数据源缓存池
 - [x] 执行器，包含原生实现 & Spring JdbcTemplate集成
 - [ ] 支持分库分表
+- [ ] 支持原生SQL
 - [ ] 支持多表连接查询
 - [ ] 集成Spring Boot
 - [ ] 支持返回主键
